@@ -1,0 +1,10 @@
+slideshare:
+  apikey: ${SLIDESHARE_APIKEY:}
+  secret: ${SLIDESHARE_SECRET:}
+  username: ${SLIDESHARE_USERNAME:}
+  password: ${SLIDESHARE_PASSWORD:}
+  slideFilePath: ${SLIDESHARE_SLIDEFILEPATH:}  # path to a presentation file
+
+logging:
+  level:
+    org.springframework.social.slideshare.api.impl.SlideShareTemplate : 'DEBUG'
