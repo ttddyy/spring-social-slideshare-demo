@@ -21,22 +21,22 @@ import java.util.List;
 @SpringBootApplication
 public class Application {
 
-	@Value ( "${slideshare.apikey}" )
+	private static final int FETCH_SIZE = 3;
+
+	@Value ("${slideshare.apikey}")
 	private String apiKey;
 
-	@Value ("${slideshare.secret}")
+	@Value ( "${slideshare.secret}" )
 	private String sharedSecret;
 
-	@Value ( "${slideshare.username}" )
+	@Value ("${slideshare.username}")
 	private String username;
 
 	@Value ("${slideshare.password}")
 	private String password;
 
-	@Value ("${slideshare.slideFilePath}")
+	@Value ( "${slideshare.slideFilePath}" )
 	private String slideFilePath;
-
-	private static final int FETCH_SIZE = 3;
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
@@ -45,7 +45,6 @@ public class Application {
 	@Bean
 	CommandLineRunner init() {
 		return args -> {
-
 			Assert.hasText(this.apiKey, "SLIDESHARE_APIKEY is required");
 			Assert.hasText(this.sharedSecret, "SLIDESHARE_SECRET is required");
 			Assert.hasText(this.username, "SLIDESHARE_USERNAME is required");
@@ -59,16 +58,17 @@ public class Application {
 			System.out.println("USERNAME: " + this.username);
 			System.out.println();
 
+			// instantiate slideshare template
 			SlideShare slideshare = new SlideShareTemplate(apiKey, sharedSecret);
 			SlideshowOperations slideshow = slideshare.slideshowOperations();
 
+			// get/search examples
 			getSingleSlideshow(slideshow);
 			getMultipleSlideshows(slideshow);
 			search(slideshow);
 
-			// upload, edit, delete   (upload needs extra permission on your slideshare dev account)
-			String uplodedId;
-			uplodedId = uploadLocalFile(slideshow);
+			// upload, edit, delete examples (upload needs extra permission on your slideshare dev account)
+			String uplodedId = uploadLocalFile(slideshow);
 			edit(slideshow, uplodedId);
 			delete(slideshow, uplodedId);
 		};
